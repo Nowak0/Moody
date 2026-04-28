@@ -1,0 +1,44 @@
+### Get All Moods
+GET http://localhost:8080/api/moods
+Accept: application/json
+
+### Get a Mood
+@get_id = 2948c049-8b90-49c0-89df-8e2dd209015e
+GET http://localhost:8080/api/moods/{{get_id}}
+Accept: application/json
+
+### Get Statistics
+GET http://localhost:8080/api/moods/statistics
+Accept: application/json
+
+### Save a Mood
+POST http://localhost:8080/api/moods
+Content-Type: application/json
+
+{
+  "value": 1,
+  "note": "test"
+}
+
+### Save a Mood
+POST http://localhost:8080/api/moods
+Content-Type: application/json
+
+{
+  "value": 2,
+  "note": "test"
+}
+
+### Save a Mood
+POST http://localhost:8080/api/moods
+Content-Type: application/json
+
+{
+  "value": 5,
+  "note": "test"
+}
+
+### Delete a Mood
+@delete_id = 2069fb1f-1386-403c-9df0-eaeab4c30a78
+DELETE http://localhost:8080/api/moods/{{delete_id}}
+Accept: application/json
