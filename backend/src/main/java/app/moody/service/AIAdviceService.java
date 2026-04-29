@@ -1,38 +1,36 @@
 package app.moody.service;
 
-import app.moody.ai.OllamaRequest;
-import app.moody.ai.OllamaResponse;
+import app.moody.ollama.OllamaRequest;
+import app.moody.ollama.OllamaResponse;
 import app.moody.dto.StatisticDTO;
 import app.moody.entity.Mood;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class AIAdviceService {
-    private static final String OLLAMA_URL = "http://localhost:11434";
-    private static final String DEFAULT_MODEL = "llama3:latest";
-    private final WebClient webClient;
+    @Value("${spring.ai.ollama.chat.model}")
+    private String DEFAULT_MODEL;
+    private final RestClient restClient;
 
-    public AIAdviceService() {
-        this.webClient = WebClient.builder()
-                .baseUrl(OLLAMA_URL)
-                .build();
+    public AIAdviceService(RestClient ollamaRestClient) {
+        this.restClient = ollamaRestClient;
     }
 
-    public Optional<String> createAdvice(Mood mood, StatisticDTO statisticDTO) {
+    public Optional<String> requestAdvice(Mood mood, StatisticDTO statisticDTO) {
         OllamaRequest request = new OllamaRequest(DEFAULT_MODEL, createPrompt(mood, statisticDTO), false);
 
         try {
-            OllamaResponse response = webClient.post()
+            OllamaResponse response = restClient.post()
                     .uri("/api/generate")
-                    .bodyValue(request)
+                    .body(request)
                     .retrieve()
-                    .bodyToMono(OllamaResponse.class)
-                    .block();
+                    .body(OllamaResponse.class);
 
             if(response == null) {
                 log.warn("Ollama returned a null response");

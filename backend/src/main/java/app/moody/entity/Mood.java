@@ -12,7 +12,6 @@ import java.util.UUID;
 @Setter
 @Builder
 @ToString
-@EqualsAndHashCode
 public class Mood {
     @Id
     @GeneratedValue
@@ -30,8 +29,4 @@ public class Mood {
 
     @Column
     private String aiAdvice;
-
-//    public void setAiAdvice(String advice) {
-//        this.aiAdvice = advice;
-//    }
 }

@@ -3,25 +3,12 @@ package app.moody.mapper;
 import app.moody.dto.MoodReadDTO;
 import app.moody.dto.MoodWriteDTO;
 import app.moody.entity.Mood;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.springframework.stereotype.Component;
 
-@Component
-public class MoodMapper {
-    public Mood toEntity(MoodWriteDTO dto) {
-        return Mood.builder()
-                .value(dto.getValue())
-                .note(dto.getNote())
-                .date(dto.getDate())
-                .build();
-    }
-
-    public MoodReadDTO toReadDTO(Mood mood) {
-        return MoodReadDTO.builder()
-                .id(mood.getId())
-                .value(mood.getValue())
-                .note(mood.getNote())
-                .date(mood.getDate())
-                .aiAdvice(mood.getAiAdvice())
-                .build();
-    }
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+public interface MoodMapper {
+    Mood toEntity(MoodWriteDTO writeDTO);
+    MoodReadDTO toReadDTO(Mood mood);
 }

@@ -2,7 +2,6 @@ package app.moody.service;
 
 import app.moody.dto.MoodReadDTO;
 import app.moody.dto.MoodWriteDTO;
-import app.moody.dto.StatisticDTO;
 import app.moody.entity.Mood;
 import app.moody.exception.ResourceNotFoundException;
 import app.moody.mapper.MoodMapper;
@@ -38,12 +37,12 @@ public class MoodService {
     }
 
     public MoodReadDTO saveMood(MoodWriteDTO writeDTO) {
-        if(writeDTO.getDate() == null) {
-            writeDTO.setDate(LocalDateTime.now());
+        Mood mood = moodMapper.toEntity(writeDTO);
+        if(mood.getDate() == null) {
+            mood.setDate(LocalDateTime.now());
         }
 
-        Mood mood = moodMapper.toEntity(writeDTO);
-        Optional<String> aiAdvice = aiAdviceService.createAdvice(mood, statisticService.getStats());
+        Optional<String> aiAdvice = aiAdviceService.requestAdvice(mood, statisticService.getStats());
         if(aiAdvice.isPresent()) {
             mood.setAiAdvice(aiAdvice.get());
         }

@@ -61,7 +61,7 @@ public class StatisticService {
         }
 
         int streak = 1;
-        for(int i = 1; i<moodDates.size(); i++) {
+        for(int i = 1; i < moodDates.size(); i++) {
             long daysBetween = ChronoUnit.DAYS.between(moodDates.get(i), moodDates.get(i-1));
             if(daysBetween != 1) {
                 break;

@@ -1,15 +1,14 @@
-package app.moody.ai;
+package app.moody.ollama;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class OllamaResponse {
+public class OllamaRequest {
     private String model;
-    private String response;
-    private boolean done;
+    private String prompt;
+    private boolean stream;
 }
