@@ -1,0 +1,39 @@
+:root {
+  --font-display: 'Share Tech Mono', 'JetBrains Mono', 'SFMono-Regular', 'Menlo', monospace;
+  --font-body: 'Space Grotesk', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --text-primary: #f3f5ff;
+  --text-secondary: #c2c7ea;
+  --text-muted: #7f87b4;
+  --accent-bright: #62d7ff;
+  --accent-secondary: #9b6bff;
+  --accent-soft: #8bd4ff;
+  --panel: rgba(12, 16, 32, 0.8);
+  --panel-glow: rgba(40, 58, 122, 0.2);
+  --border-soft: rgba(120, 150, 255, 0.2);
+  --border-strong: rgba(120, 150, 255, 0.4);
+  --shadow-soft: 0 20px 60px rgba(7, 10, 28, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background: radial-gradient(circle at top, rgba(86, 115, 255, 0.2), transparent 45%),
+    radial-gradient(circle at 20% 20%, rgba(98, 215, 255, 0.15), transparent 50%),
+    #05060f;
+  color: var(--text-primary);
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
