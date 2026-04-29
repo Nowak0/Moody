@@ -11,7 +11,7 @@ public class MoodMapper {
         return Mood.builder()
                 .value(dto.getValue())
                 .note(dto.getNote())
-//                .date(dto.getDate())
+                .date(dto.getDate())
                 .build();
     }
 
@@ -21,6 +21,7 @@ public class MoodMapper {
                 .value(mood.getValue())
                 .note(mood.getNote())
                 .date(mood.getDate())
+                .aiAdvice(mood.getAiAdvice())
                 .build();
     }
 }

@@ -13,4 +13,5 @@ public class MoodReadDTO {
     private int value;
     private String note;
     private LocalDateTime date;
+    private String aiAdvice;
 }

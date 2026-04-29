@@ -10,10 +10,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StatisticService {
-    private final int DAYS_MEASUREMENT = 7;
+    private static final int DAYS_MEASUREMENT = 7;
     private final MoodRepository moodRepository;
 
     public StatisticService(MoodRepository moodRepository) {
@@ -44,20 +45,28 @@ public class StatisticService {
     }
 
     private int calculateStreak() {
-        int streak = 0;
-        LocalDateTime now = LocalDateTime.now();
-        List<Mood> moods = moodRepository.findAllByOrderByDateDesc();
+        List<LocalDate> moodDates = moodRepository.findAllByOrderByDateDesc()
+                .stream()
+                .map(mood -> mood.getDate().toLocalDate())
+                .distinct()
+                .collect(Collectors.toList());
 
-        for(Mood mood : moods) {
-            LocalDateTime date2 = mood.getDate();
-            boolean withinOneDay = now.toLocalDate().isEqual(date2.toLocalDate())
-                    || ChronoUnit.DAYS.between(now.toLocalDate(), date2.toLocalDate()) <= 1;
+        if(moodDates.isEmpty()) {
+            return 0;
+        }
 
-            if(!withinOneDay) {
+        LocalDate today = LocalDate.now();
+        if(!moodDates.get(0).isEqual(today)) {
+            return 0;
+        }
+
+        int streak = 1;
+        for(int i = 1; i<moodDates.size(); i++) {
+            long daysBetween = ChronoUnit.DAYS.between(moodDates.get(i), moodDates.get(i-1));
+            if(daysBetween != 1) {
                 break;
             } else {
                 streak++;
-                now = date2;
             }
         }
 

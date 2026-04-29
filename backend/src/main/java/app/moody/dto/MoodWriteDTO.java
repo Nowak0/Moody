@@ -1,30 +1,28 @@
 package app.moody.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tools.jackson.databind.annotation.JsonDeserialize;
-import tools.jackson.databind.annotation.JsonSerialize;
-import tools.jackson.databind.ext.javatime.deser.LocalDateTimeDeserializer;
-import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class MoodWriteDTO {
-    @Positive
+    @Min(1)
+    @Max(10)
+    @NotNull
     private int value;
 
     private String note;
 
-//    @JsonFormat(pattern="yyyy-MM-dd")
-//    @PastOrPresent
-//    @NotNull
-//    private LocalDateTime date;
+    @Setter
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @PastOrPresent
+    private LocalDateTime date;
 }

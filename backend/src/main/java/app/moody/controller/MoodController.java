@@ -3,6 +3,7 @@ package app.moody.controller;
 import app.moody.dto.MoodReadDTO;
 import app.moody.dto.MoodWriteDTO;
 import app.moody.dto.StatisticDTO;
+import app.moody.entity.Mood;
 import app.moody.service.MoodService;
 import app.moody.service.StatisticService;
 import jakarta.validation.Valid;

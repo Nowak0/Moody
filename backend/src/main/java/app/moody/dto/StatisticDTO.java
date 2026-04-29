@@ -1,15 +1,13 @@
 package app.moody.dto;
 
 import app.moody.entity.Trend;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
+@ToString
 public class StatisticDTO {
     private float avgMood;
     private int streak;

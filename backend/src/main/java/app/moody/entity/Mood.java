@@ -9,7 +9,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
+@ToString
+@EqualsAndHashCode
 public class Mood {
     @Id
     @GeneratedValue
@@ -25,8 +28,10 @@ public class Mood {
     @Column(nullable = false, name="mood_date")
     private LocalDateTime date;
 
-    @PrePersist
-    protected void onCreate() {
-        this.date = LocalDateTime.now();
-    }
+    @Column
+    private String aiAdvice;
+
+//    public void setAiAdvice(String advice) {
+//        this.aiAdvice = advice;
+//    }
 }
