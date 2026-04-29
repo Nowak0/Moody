@@ -1,0 +1,83 @@
+services:
+  moody-db:
+    image: postgres:16-alpine
+    container_name: moody-db
+    environment:
+      POSTGRES_DB: moodydb
+      POSTGRES_USER: moodyuser
+      POSTGRES_PASSWORD: moodypass
+    volumes:
+      - moody-data:/var/lib/postgresql/data
+    networks:
+      - moody-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moodyuser -d moodydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+  moody-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: moody-backend
+    environment:
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:postgresql://moody-db:5432/moodydb
+      SPRING_DATASOURCE_USERNAME: moodyuser
+      SPRING_DATASOURCE_PASSWORD: moodypass
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_AI_OLLAMA_BASE_URL: http://ollama:11434
+      SPRING_AI_OLLAMA_CHAT_MODEL: llama3:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - moody-network
+    restart: unless-stopped
+    depends_on:
+      moody-db:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+
+  moody-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: moody-frontend
+    ports:
+      - "80:80"
+    environment:
+      - MOODY_BACKEND_URL=http://moody-backend:8081
+    networks:
+      - moody-network
+    restart: unless-stopped
+    depends_on:
+      - moody-backend
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - moody-network
+    entrypoint: /bin/sh
+    command: -c "ollama serve & sleep 5 && ollama pull llama3:latest && wait"
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list | grep llama3 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+networks:
+  moody-network:
+    driver: bridge
+
+volumes:
+  moody-data:
+  ollama-data:

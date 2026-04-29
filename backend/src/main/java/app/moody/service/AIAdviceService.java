@@ -55,7 +55,7 @@ public class AIAdviceService {
                 - note is an additional feedback
             \n
             Be smart with the mood value: if a person put a low value they really need help, if they put
-            for example 9 or 10, they probably don't need much help. Adjust you response by taking mood value into account.
+            for example 9 or 10, they probably don't need much help. Adjust your response by taking mood value into account.
             Look into statistics - check trends (if it is up or down), check average mood from past days. It should
             guide you to giving the most suitable response. Remember, the provided stats are not updated with the newest
             mood submission you are receiving.
